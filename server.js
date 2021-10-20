@@ -21,8 +21,15 @@ function getKey(header, callback){
 const PORT = process.env.PORT || 3000;
 
 app.get('/test', (request, response) => {
-
-  response.send('test request received')
+const token = request.headers.authorization.split(' ')[1];
+console.log(`JWT: ${token}`);
+jwt.verify(token, getKey, {}, function(err, user){
+  if(err){
+    response.send(invalid);
+  } else {
+    response.send(user);
+  }
+})
 
 })
 
